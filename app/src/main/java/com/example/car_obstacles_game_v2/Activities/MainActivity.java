@@ -10,18 +10,21 @@ import androidx.appcompat.widget.AppCompatImageView;
 import com.example.car_obstacles_game_v2.Logic.GameManager;
 import com.example.car_obstacles_game_v2.R;
 import com.example.car_obstacles_game_v2.Utilities.SignalManager;
+import com.example.car_obstacles_game_v2.Utilities.SoundPlayer;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String KEY_MODE = "";
     private AppCompatImageView obstacles[][] = new AppCompatImageView[9][5];
     private AppCompatImageView hearts[] = new AppCompatImageView[3];
     private AppCompatImageView cars[] = new AppCompatImageView[5];
     private ExtendedFloatingActionButton leftButton,rightButton;
     private GameManager gameManager;
     private Timer timer;
+    private SoundPlayer crashSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         gameManager = new GameManager();
+        crashSound = new SoundPlayer(this);
         SignalManager.init(this);
         findViews();
         initViews();
@@ -59,8 +63,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews(){
-        leftButton.setOnClickListener(v -> moveCar(-1));
-        rightButton.setOnClickListener(v -> moveCar(1));
+        Intent preIntent = getIntent();
+        int mode = preIntent.getIntExtra(KEY_MODE,0);
+        if(mode == 1){
+            leftButton.setVisibility(View.INVISIBLE);
+            rightButton.setVisibility(View.INVISIBLE);
+        } else {
+            leftButton.setOnClickListener(v -> moveCar(-1));
+            rightButton.setOnClickListener(v -> moveCar(1));
+        }
 
         for(int i=0;i< cars.length;i++)
             cars[i].setVisibility(View.INVISIBLE);
@@ -87,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
         SignalManager.getInstance().toast("Collision");
         SignalManager.getInstance().vibrate(500);
+        // crashSound.playSound(id);
         updateLife();
     }
 
@@ -104,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
         if(life == 1) {
             timer.cancel();
             timer = null;
+            Intent recordsIntent = new Intent(this,GameRecordsActivity.class);
+            startActivity(recordsIntent);
         } else {
             hearts[life-1].setVisibility(View.INVISIBLE);
             gameManager.updateLife();
@@ -123,11 +137,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         timer.cancel();
+        crashSound.stopSound();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        crashSound = new SoundPlayer(this);
         startGame();
     }
 }

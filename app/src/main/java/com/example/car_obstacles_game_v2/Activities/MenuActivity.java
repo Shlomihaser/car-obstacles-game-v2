@@ -15,6 +15,10 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 public class MenuActivity extends AppCompatActivity {
 
     private ExtendedFloatingActionButton menu_BTN_start_game, menu_BTN_game_records, menu_BTN_buttons,menu_BTN_sensors;
+    private int selectedMode = -1;
+
+    public static final int BUTTONS_MODE = 0;
+    public static final int SENSORS_MODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +29,6 @@ public class MenuActivity extends AppCompatActivity {
         initViews();
     }
 
-
-
     private void findViews(){
         menu_BTN_buttons = findViewById(R.id.menu_BTN_buttons);
         menu_BTN_sensors = findViewById(R.id.menu_BTN_sensors);
@@ -36,21 +38,21 @@ public class MenuActivity extends AppCompatActivity {
     private void initViews(){
             menu_BTN_start_game.setOnClickListener((v) -> startGameActivity());
             menu_BTN_game_records.setOnClickListener((v) -> moveToGameRecordsActivity());
-         //   menu_BTN_sensors.setOnClickListener((v) -> moveToGameRecordsActivity());
-         //   menu_BTN_buttons.setOnClickListener((v) -> moveToGameRecordsActivity());
+            menu_BTN_buttons.setOnClickListener((v) -> selectedMode = BUTTONS_MODE);
+            menu_BTN_sensors.setOnClickListener((v) -> selectedMode = SENSORS_MODE);
     }
 
     private void moveToGameRecordsActivity() {
-     //   Intent i = new Intent(this,GameRecordsActivity.class);
-
+       Intent recordsActivity = new Intent(this,GameRecordsActivity.class);
+       startActivity(recordsActivity);
+       finish();
     }
     private void startGameActivity(){
-        Intent i = new Intent(this,MainActivity.class);
-        startActivity(i);
+        if(selectedMode == -1)
+            return;
+        Intent gameIntent = new Intent(this,MainActivity.class);
+        gameIntent.putExtra(MainActivity.KEY_MODE,selectedMode);
+        startActivity(gameIntent);
         finish();
     }
-
-
-
-
 }
