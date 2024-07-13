@@ -18,13 +18,17 @@ public class SoundPlayer {
     }
 
     public void playSound(int resId){
+
         if(mediaPlayer == null){
             executor.execute(() -> {
                 mediaPlayer = MediaPlayer.create(context,resId);
                 mediaPlayer.setVolume(1.0f,1.0f);
                 mediaPlayer.start();
+                mediaPlayer.setLooping(false);
             });
         }
+        else
+            mediaPlayer.start();
     }
 
     public void stopSound(){

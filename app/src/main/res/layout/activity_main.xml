@@ -8,10 +8,11 @@
     tools:context=".Activities.MainActivity">
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/main_Score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="0000"
+        android:text="000"
         android:textSize="40sp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="10dp"/>

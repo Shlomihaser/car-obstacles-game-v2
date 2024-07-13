@@ -19,8 +19,10 @@
             android:layout_height="wrap_content"
             app:cornerRadius="@dimen/menu_button_corner"
             android:text="Sensors"
-            android:textSize="20dp"
+            android:textSize="30dp"
             android:padding="15dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/purple_button"
             />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -29,15 +31,12 @@
             android:layout_height="wrap_content"
             app:cornerRadius="@dimen/menu_button_corner"
             android:text="Buttons"
-            android:textSize="20dp"
+            android:textSize="30dp"
             android:padding="15dp"
-            app:icon="@drawable/car"
-            app:iconTint="@null"
-            app:iconSize="60dp"
-            app:iconGravity="top"
+            android:backgroundTint="@color/purple_button"
             />
-
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
